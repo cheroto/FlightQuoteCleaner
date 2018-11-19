@@ -13,6 +13,7 @@ namespace FlightQuoteCleaner
         string RemoveTextInBetween(string quotes);
         string RemoveTrailingTextBack(string quotes);
         string RemoveTrailingTextFront(string quotes);
+        List<Object> GenerateQuoteObjectList(string quotes);
 
         string FilterPrices(string quotes);
     }
@@ -26,6 +27,15 @@ namespace FlightQuoteCleaner
             quotes = RemoveTrailingTextBack(quotes);
             quotes = RemoveTrailingTextFront(quotes);
             return quotes;
+        }
+
+        public List<object> GenerateQuoteObjectList(string quotes)
+        {
+            quotes = quotes
+                .Replace("$", "")
+                .Replace(",","")
+                .Replace("\r\n", ";");
+            return quotes.Split(';').ToList<Object>();
         }
 
         public string RemovePreviousPrices(string quotes)

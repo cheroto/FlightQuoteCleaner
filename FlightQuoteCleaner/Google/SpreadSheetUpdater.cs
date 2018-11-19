@@ -10,14 +10,26 @@ using System.Threading;
 
 namespace FlightQuoteCleaner.Google
 {
-    public class SpreadSheetUpdater
+    public class SpreadSheetUpdater : ISpreadSheetUpdater
     {
         // If modifying these scopes, delete your previously saved credentials
         // at ~/.credentials/sheets.googleapis.com-dotnet-quickstart.json
         static string[] Scopes = { SheetsService.Scope.Spreadsheets };
         static string ApplicationName = "Google Sheets API .NET Quickstart";
 
-        public void PrintSpreadSheetData()
+        public List<Object> Quotes { get; set; }
+
+        public SpreadSheetUpdater()
+        {
+
+        }
+
+        public SpreadSheetUpdater(List<object> quotes)
+        {
+            Quotes = quotes;
+        }
+
+        public void UpdateSpreadSheetData()
         {
             UserCredential credential;
 
@@ -45,36 +57,25 @@ namespace FlightQuoteCleaner.Google
 
             // Define request parameters.
             String spreadsheetId = "1BODs_1wmA62KoZUN0dalOCTIPQpvy4YaxffSKY07I2A";
-            String range = "Flight Quotes!A4";
             ValueRange vr = new ValueRange();
+            vr.Range = "Data!B22";
+            SpreadsheetsResource.ValuesResource.GetRequest request = service.Spreadsheets.Values.Get(spreadsheetId, vr.Range);
+            ValueRange response = request.Execute();
+            string cell = (string)response.Values[0][0];
+
+            String range = "Data!" + cell;
+            vr.MajorDimension = "COLUMNS";
             vr.Range = range;
-            var list = new List<Object>() { "This is a Test" };
-            vr.Values = new List<IList<Object>>() { list };
+            vr.Values = new List<IList<Object>>() { Quotes };
 
-            SpreadsheetsResource.ValuesResource.UpdateRequest request =
+            SpreadsheetsResource.ValuesResource.UpdateRequest update =
                     service.Spreadsheets.Values.Update(vr, spreadsheetId, range);
-            request.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
-            request.Execute();
-            Console.WriteLine("Done");
+            update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+            update.Execute();
 
-            //// Prints the names and majors of students in a sample spreadsheet:
-            //// https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-            //ValueRange response = request.Execute();
-            //IList<IList<Object>> values = response.Values;
-            //if (values != null && values.Count > 0)
-            //{
-            //    Console.WriteLine("Itinerary");
-            //    foreach (var row in values)
-            //    {
-            //        // Print columns A and E, which correspond to indices 0 and 4.
-            //        Console.WriteLine("{0}", row[0]);
-            //    }
-            //}
-            //else
-            //{
-            //    Console.WriteLine("No data found.");
-            //}
-            Console.Read();
+
+
+            Console.WriteLine("Done");
         }
     }
 }

@@ -15,24 +15,30 @@ namespace FlightQuoteCleaner
             var builder = new ContainerBuilder();
             builder.RegisterType<TextFileHandler>().As<IDataAccess>();
             builder.RegisterType<QuoteCleaner>().As<IQuoteCleaner>();
+            builder.RegisterType<SpreadSheetUpdater>().As<ISpreadSheetUpdater>();
             var container = builder.Build();
+
+            List<object> quoteList;
 
             IDataAccess textFileHandler;
             IQuoteCleaner quoteCleaner;
+            ISpreadSheetUpdater spreadSheetUpdater;
 
             using (var scope = container.BeginLifetimeScope())
             {
                 textFileHandler = scope.Resolve<IDataAccess>();
                 quoteCleaner = scope.Resolve<IQuoteCleaner>();
+                spreadSheetUpdater = scope.Resolve<ISpreadSheetUpdater>();
             }
 
             var dirtyQuotes = textFileHandler.GetQuoteString();
             var quotes = quoteCleaner.FilterPrices(dirtyQuotes);
+            quoteList = quoteCleaner.GenerateQuoteObjectList(quotes);
 
             textFileHandler.WriteCleanQuotes(quotes);
 
-            var spreadSheetUpdater = new SpreadSheetUpdater();
-            spreadSheetUpdater.PrintSpreadSheetData();
+            spreadSheetUpdater.Quotes = quoteList;
+            spreadSheetUpdater.UpdateSpreadSheetData();
         }
     }
 }
