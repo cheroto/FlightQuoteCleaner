@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace FlightQuoteCleaner
 {
@@ -13,8 +14,8 @@ namespace FlightQuoteCleaner
         string _fileWriteLocation;
         public TextFileHandler()
         {
-            _fileReadLocation = @"C:\Users\pedro\OneDrive\Documentos\quotes.txt";
-            _fileWriteLocation = @"C:\Users\pedro\OneDrive\Documentos\quotesClean.txt";
+            _fileReadLocation = ConfigurationManager.AppSettings["ReadLocation"];
+            _fileWriteLocation = ConfigurationManager.AppSettings["WriteLocation"];
         }
 
         public string GetQuoteString()
