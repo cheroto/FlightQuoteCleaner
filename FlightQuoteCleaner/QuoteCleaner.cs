@@ -35,7 +35,10 @@ namespace FlightQuoteCleaner
                 .Replace("$", "")
                 .Replace(",","")
                 .Replace("\r\n", ";");
-            return quotes.Split(';').ToList<Object>();
+            var quotesInNumbers = Array.ConvertAll<string, int>(quotes.Split(';'), s => int.Parse(s));
+            var quoteList = new List<object>();
+            foreach (int value in quotesInNumbers) quoteList.Add((object)value);
+            return quoteList;
         }
 
         public string RemovePreviousPrices(string quotes)

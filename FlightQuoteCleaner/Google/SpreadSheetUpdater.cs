@@ -74,6 +74,15 @@ namespace FlightQuoteCleaner.Google
             update.Execute();
 
 
+            vr.Range = "Flight Quotes!I29";
+            var time = new List<object>() { DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") };
+            vr.Values = new List<IList<Object>>() { time };
+            SpreadsheetsResource.ValuesResource.UpdateRequest updateTime = 
+                service.Spreadsheets.Values.Update(vr, spreadsheetId, vr.Range);
+            updateTime.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+            updateTime.Execute();
+
+
 
             Console.WriteLine("Done");
         }
