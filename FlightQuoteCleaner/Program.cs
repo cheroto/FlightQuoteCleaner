@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using FlightQuoteCleaner.Google;
 
 namespace FlightQuoteCleaner
 {
@@ -23,12 +24,15 @@ namespace FlightQuoteCleaner
             {
                 textFileHandler = scope.Resolve<IDataAccess>();
                 quoteCleaner = scope.Resolve<IQuoteCleaner>();
-            }            
+            }
 
             var dirtyQuotes = textFileHandler.GetQuoteString();
             var quotes = quoteCleaner.FilterPrices(dirtyQuotes);
 
             textFileHandler.WriteCleanQuotes(quotes);
+
+            var spreadSheetUpdater = new SpreadSheetUpdater();
+            spreadSheetUpdater.PrintSpreadSheetData();
         }
     }
 }

@@ -182,6 +182,7 @@ $246
         public void RemoveTrailingTextBack_Success()
         {
             //Arrange
+            #region Input & Expected Result Strings
             var inputString = @"Air Canada
 1 stop
 GRU–LAX
@@ -222,7 +223,7 @@ $1,086
 $911
 $246
 $246";
-
+            #endregion
             //Act
             var actualResult = _quoteCleaner.RemoveTrailingTextBack(inputString);
 
@@ -234,6 +235,7 @@ $246";
         public void RemoveTrailingTextFront_Success()
         {
             //Arrange
+            #region Input & Expected Output Strings
             var inputString = @"Air Canada
 1 stop
 GRU–LAX
@@ -257,7 +259,7 @@ $246";
 $911
 $246
 $246";
-
+            #endregion
             //Act
             var actualResult = _quoteCleaner.RemoveTrailingTextFront(inputString);
 
