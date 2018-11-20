@@ -8,11 +8,11 @@ using System.Configuration;
 
 namespace FlightQuoteCleaner
 {
-    class TextFileHandler : IDataAccess
+    class DataAccessFile : IDataAccess
     {
         string _fileReadLocation;
         string _fileWriteLocation;
-        public TextFileHandler()
+        public DataAccessFile()
         {
             _fileReadLocation = ConfigurationManager.AppSettings["ReadLocation"];
             _fileWriteLocation = ConfigurationManager.AppSettings["WriteLocation"];

@@ -68,9 +68,9 @@ namespace FlightQuoteCleaner.Google
             vr.Range = range;
             vr.Values = new List<IList<Object>>() { Quotes };
 
-            SpreadsheetsResource.ValuesResource.UpdateRequest update =
-                    service.Spreadsheets.Values.Update(vr, spreadsheetId, range);
-            update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+            SpreadsheetsResource.ValuesResource.AppendRequest update =
+                    service.Spreadsheets.Values.Append(vr, spreadsheetId, range);
+            update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
             update.Execute();
 
 

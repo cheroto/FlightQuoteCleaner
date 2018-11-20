@@ -10,10 +10,11 @@ namespace FlightQuoteCleaner
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<TextFileHandler>().As<IDataAccess>();
+            builder.RegisterType<DataAccessWebsite>().As<IDataAccess>();
             builder.RegisterType<QuoteCleaner>().As<IQuoteCleaner>();
             builder.RegisterType<SpreadSheetUpdater>().As<ISpreadSheetUpdater>();
             var container = builder.Build();
