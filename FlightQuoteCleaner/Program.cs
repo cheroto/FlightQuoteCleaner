@@ -21,25 +21,26 @@ namespace FlightQuoteCleaner
 
             List<object> quoteList;
 
-            IDataAccess textFileHandler;
+            IDataAccess dataAccessHandler;
             IQuoteCleaner quoteCleaner;
             ISpreadSheetUpdater spreadSheetUpdater;
 
             using (var scope = container.BeginLifetimeScope())
             {
-                textFileHandler = scope.Resolve<IDataAccess>();
+                dataAccessHandler = scope.Resolve<IDataAccess>();
                 quoteCleaner = scope.Resolve<IQuoteCleaner>();
                 spreadSheetUpdater = scope.Resolve<ISpreadSheetUpdater>();
             }
 
-            var dirtyQuotes = textFileHandler.GetQuoteString();
+            var dirtyQuotes = dataAccessHandler.GetQuoteString();
             var quotes = quoteCleaner.FilterPrices(dirtyQuotes);
             quoteList = quoteCleaner.GenerateQuoteObjectList(quotes);
 
-            textFileHandler.WriteCleanQuotes(quotes);
+            dataAccessHandler.WriteCleanQuotes(quotes);
 
             spreadSheetUpdater.Quotes = quoteList;
             spreadSheetUpdater.UpdateSpreadSheetData();
+            Console.ReadLine();
         }
     }
 }
