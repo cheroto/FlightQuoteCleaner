@@ -62,7 +62,7 @@ namespace FlightQuoteCleaner
 
         public string RemoveTextInBetween(string quotes)
         {
-            Regex rg = new Regex(@"1 passenger.*?Airline\r\n", RegexOptions.Singleline);
+            Regex rg = new Regex(@"1 passenger.*?(Airline|LAX)\r\n", RegexOptions.Singleline);
             quotes = rg.Replace(quotes, "");
             return quotes;
         }

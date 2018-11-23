@@ -58,7 +58,7 @@ namespace FlightQuoteCleaner.Google
             // Define request parameters.
             String spreadsheetId = "1BODs_1wmA62KoZUN0dalOCTIPQpvy4YaxffSKY07I2A";
             ValueRange vr = new ValueRange();
-            vr.Range = "Data!B22";
+            vr.Range = "Data!B23";
             SpreadsheetsResource.ValuesResource.GetRequest request = service.Spreadsheets.Values.Get(spreadsheetId, vr.Range);
             ValueRange response = request.Execute();
             string cell = (string)response.Values[0][0];
