@@ -66,6 +66,7 @@ namespace FlightQuoteCleaner.Google
             String range = "Data!" + cell;
             vr.MajorDimension = "COLUMNS";
             vr.Range = range;
+            Quotes.Add(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
             vr.Values = new List<IList<Object>>() { Quotes };
 
             SpreadsheetsResource.ValuesResource.AppendRequest update =
@@ -74,7 +75,7 @@ namespace FlightQuoteCleaner.Google
             update.Execute();
 
 
-            vr.Range = "Flight Quotes!I29";
+            vr.Range = "Flight Quotes!I30";
             var time = new List<object>() { DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") };
             vr.Values = new List<IList<Object>>() { time };
             SpreadsheetsResource.ValuesResource.UpdateRequest updateTime = 
