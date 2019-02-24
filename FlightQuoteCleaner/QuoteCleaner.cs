@@ -32,6 +32,7 @@ namespace FlightQuoteCleaner
         public List<object> GenerateQuoteObjectList(string quotes)
         {
             quotes = quotes
+                .Replace("CA","")
                 .Replace("$", "")
                 .Replace(",","")
                 .Replace("\r\n", ";");
@@ -43,8 +44,8 @@ namespace FlightQuoteCleaner
 
         public string RemovePreviousPrices(string quotes)
         {
-            Regex rgBothPrices = new Regex(@"\$.*?\r\n\$.*?\r\n");
-            Regex rgFirstPrice = new Regex(@"\$.*?\r\n");
+            Regex rgBothPrices = new Regex(@"(CA)?\$.*?\r\n(CA)?\$.*?\r\n");
+            Regex rgFirstPrice = new Regex(@"(CA)?\$.*?\r\n");
             MatchCollection matches = rgBothPrices.Matches(quotes);
             int startIndex;
             int firstPriceLength;
