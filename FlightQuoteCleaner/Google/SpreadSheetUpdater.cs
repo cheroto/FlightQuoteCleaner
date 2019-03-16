@@ -57,13 +57,14 @@ namespace FlightQuoteCleaner.Google
 
             // Define request parameters.
             String spreadsheetId = "1BODs_1wmA62KoZUN0dalOCTIPQpvy4YaxffSKY07I2A";
-            ValueRange vr = new ValueRange();
-            vr.Range = "Data!B24";
-            SpreadsheetsResource.ValuesResource.GetRequest request = service.Spreadsheets.Values.Get(spreadsheetId, vr.Range);
+            NamedRange nr = new NamedRange();
+            nr.Name = "LastNonEmptyCell";
+            SpreadsheetsResource.ValuesResource.GetRequest request = service.Spreadsheets.Values.Get(spreadsheetId, nr.Name);
             ValueRange response = request.Execute();
             string cell = (string)response.Values[0][0];
 
             String range = "Data!" + cell;
+            ValueRange vr = new ValueRange();
             vr.MajorDimension = "COLUMNS";
             vr.Range = range;
             Quotes.Add(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
@@ -75,7 +76,11 @@ namespace FlightQuoteCleaner.Google
             update.Execute();
 
 
-            vr.Range = "Flight Quotes!I31";
+            nr.Name = "LastUpdatedOn";
+            request = service.Spreadsheets.Values.Get(spreadsheetId, nr.Name);
+            response = request.Execute();
+
+            range = response.Range;
             var time = new List<object>() { DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") };
             vr.Values = new List<IList<Object>>() { time };
             SpreadsheetsResource.ValuesResource.UpdateRequest updateTime = 
