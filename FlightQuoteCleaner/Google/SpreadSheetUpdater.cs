@@ -80,7 +80,7 @@ namespace FlightQuoteCleaner.Google
             request = service.Spreadsheets.Values.Get(spreadsheetId, nr.Name);
             response = request.Execute();
 
-            range = response.Range;
+            vr.Range = response.Range;
             var time = new List<object>() { DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") };
             vr.Values = new List<IList<Object>>() { time };
             SpreadsheetsResource.ValuesResource.UpdateRequest updateTime = 
